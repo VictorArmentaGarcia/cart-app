@@ -16,9 +16,15 @@ export class CartAppComponent implements OnInit {
   productos: Product[]= [];
   items: CartItem[]= [];
   @Output() productEventEmiter: EventEmitter<Product> = new EventEmitter<Product>();
+  total: number = 0;
+  showCart: boolean = false;
 
-  constructor(private productService: ProductService){
+  constructor(private productService: ProductService){}
 
+  ngOnInit(): void {
+    this.productos = this.productService.findAll();
+    this.items = JSON.parse(sessionStorage.getItem('cart')!) || [];
+    this.calculateTotal();
   }
 
   addCart(product: Product) {
@@ -39,15 +45,24 @@ export class CartAppComponent implements OnInit {
     }else{
       this.items = [... this.items, { product: {...product } , quantity: 1} ];
     }
-    
-  }
-
-  ngOnInit(): void {
-    this.productos = this.productService.findAll();
+    this.calculateTotal();
   }
 
   onDeleteCart(idProduct: number): void {
     this.items = this.items.filter(item => item.product.id !== idProduct);
+    this.calculateTotal();
+  }
+
+  calculateTotal(): void {
+    this.total = this.items.reduce((acumulator , item) => acumulator + item.product.price * item.quantity , 0);
+  }
+ 
+  saveSesion(): void {
+    sessionStorage.setItem('cart', JSON.stringify(this.items));
+  }
+
+  openOrCloseCart(): void {
+    this.showCart = !this.showCart;
   }
 
 }
