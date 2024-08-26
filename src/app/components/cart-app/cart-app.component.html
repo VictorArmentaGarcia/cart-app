@@ -2,24 +2,21 @@
 
 <div class="container my-4">
 
-    <h2>Catalogo de productos cart app</h2>
     <div class="row">
-        <div [className]="showCart ? 'col-9' : 'col'">
-            <catalogo [products]="productos" (productEventEmiter)="addCart($event)"/>
+        <div [className]="showCart ? 'col' : 'col'">
+            <catalogo 
+            [products]="productos" 
+            (productEventEmiter)="addCart($event)"
+            />
         </div>
         
         @if(showCart){
-            <div class="col-3">
-                @if (items.length > 0) {
-                    <cart 
-                    [total]="total"
-                    [items]="items" 
-                    (idProductDelete)="onDeleteCart($event)">
-                    </cart>
-                } @else {
-                    <div class="alert alert-warning">No existen elementos en el carrito</div>
-                }
-            </div>
+            <cart-modal 
+            [total]="total" 
+            [items]="items" 
+            (idProductDelete)="onDeleteCart($event)"
+            (eventCloseEmit)="openOrCloseCart()"
+            ></cart-modal>
         }
     </div>
     
