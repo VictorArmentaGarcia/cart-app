@@ -5,12 +5,11 @@ import { CatalogoComponent } from "../catalogo/catalogo.component";
 import { CartItem } from '../../models/CartItem';
 import { CartComponent } from "../cart/cart.component";
 import { NavbarComponent } from "../navbar/navbar.component";
-import { CartModalComponent } from "../cart-modal/cart-modal.component";
 
 @Component({
   selector: 'cart-app',
   standalone: true,
-  imports: [CatalogoComponent, CartComponent, NavbarComponent, CartModalComponent],
+  imports: [CatalogoComponent, CartComponent, NavbarComponent],
   templateUrl: './cart-app.component.html',
 })
 export class CartAppComponent implements OnInit {
@@ -19,7 +18,6 @@ export class CartAppComponent implements OnInit {
   items: CartItem[]= [];
   @Output() productEventEmiter: EventEmitter<Product> = new EventEmitter<Product>();
   total: number = 0;
-  showCart: boolean = false;
 
   constructor(private productService: ProductService){}
 
@@ -63,10 +61,6 @@ export class CartAppComponent implements OnInit {
  
   saveSesion(): void {
     sessionStorage.setItem('cart', JSON.stringify(this.items));
-  }
-
-  openOrCloseCart(){
-    this.showCart = !this.showCart;
   }
 
 }
