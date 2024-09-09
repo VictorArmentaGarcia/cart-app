@@ -6,6 +6,7 @@ import { CartItem } from '../../models/CartItem';
 import { CartComponent } from "../cart/cart.component";
 import { NavbarComponent } from "../navbar/navbar.component";
 import { RouterOutlet } from '@angular/router';
+import { SharingDataService } from '../../services/sharing-data.service';
 
 @Component({
   selector: 'cart-app',
@@ -20,7 +21,9 @@ export class CartAppComponent implements OnInit {
   @Output() productEventEmiter: EventEmitter<Product> = new EventEmitter<Product>();
   total: number = 0;
 
-  constructor(private productService: ProductService){
+  constructor(
+    private sharingDataServ: SharingDataService,
+    private productService: ProductService){
     
   }
 
@@ -28,6 +31,7 @@ export class CartAppComponent implements OnInit {
     this.productos = this.productService.findAll();
     this.items = JSON.parse(sessionStorage.getItem('cart') || '[]');
     this.calculateTotal();
+    this.onDeleteCart();
   }
 
   addCart(product: Product) {
@@ -52,10 +56,15 @@ export class CartAppComponent implements OnInit {
     this.saveSesion();
   }
 
-  onDeleteCart(idProduct: number): void {
-    this.items = this.items.filter(item => item.product.id !== idProduct);
-    this.calculateTotal();
-    this.saveSesion();
+  onDeleteCart(): void {
+
+    this.sharingDataServ.IdProductDelete.subscribe(id => {
+      console.log("se ejecutar el eventi");
+      this.items = this.items.filter(item => item.product.id !== id);
+      this.calculateTotal();
+      this.saveSesion();
+
+    })
   }
 
   calculateTotal(): void {

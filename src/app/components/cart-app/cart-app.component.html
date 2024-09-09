@@ -1,18 +1,11 @@
-<navbar [items]="items" [total]="total"></navbar>
+<navbar 
+[items]="items" 
+[total]="total"
+[productos]="productos"
+></navbar>
 
 <div class="container my-4">
 
-    <div class="row">
-        <div class="col">
-            <catalogo 
-            [products]="productos" 
-            (productEventEmiter)="addCart($event)"
-            />
-
-            <router-outlet></router-outlet>
-        </div>
-
-    </div>
-    
+    <router-outlet></router-outlet>    
 
 </div>
