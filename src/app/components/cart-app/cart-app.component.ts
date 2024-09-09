@@ -5,11 +5,12 @@ import { CatalogoComponent } from "../catalogo/catalogo.component";
 import { CartItem } from '../../models/CartItem';
 import { CartComponent } from "../cart/cart.component";
 import { NavbarComponent } from "../navbar/navbar.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'cart-app',
   standalone: true,
-  imports: [CatalogoComponent, CartComponent, NavbarComponent],
+  imports: [CatalogoComponent, CartComponent, NavbarComponent, RouterOutlet],
   templateUrl: './cart-app.component.html',
 })
 export class CartAppComponent implements OnInit {
@@ -19,7 +20,9 @@ export class CartAppComponent implements OnInit {
   @Output() productEventEmiter: EventEmitter<Product> = new EventEmitter<Product>();
   total: number = 0;
 
-  constructor(private productService: ProductService){}
+  constructor(private productService: ProductService){
+    
+  }
 
   ngOnInit(): void {
     this.productos = this.productService.findAll();
