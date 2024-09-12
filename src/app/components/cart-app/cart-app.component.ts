@@ -5,7 +5,7 @@ import { CatalogoComponent } from "../catalogo/catalogo.component";
 import { CartItem } from '../../models/CartItem';
 import { CartComponent } from "../cart/cart.component";
 import { NavbarComponent } from "../navbar/navbar.component";
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { SharingDataService } from '../../services/sharing-data.service';
 
 @Component({
@@ -22,6 +22,7 @@ export class CartAppComponent implements OnInit {
   total: number = 0;
 
   constructor(
+    private router: Router,
     private sharingDataServ: SharingDataService,
     private productService: ProductService){
     
@@ -57,7 +58,9 @@ export class CartAppComponent implements OnInit {
       }
       this.calculateTotal();
       this.saveSesion();
-
+      this.router.navigate(['/cart'], {
+        state: { items: this.items, total: this.total }
+      });
     })
   }
 
@@ -68,6 +71,12 @@ export class CartAppComponent implements OnInit {
       this.items = this.items.filter(item => item.product.id !== id);
       this.calculateTotal();
       this.saveSesion();
+
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate(['/cart'], {
+          state: { items: this.items, total: this.total }
+        });
+      });
 
     })
   }
