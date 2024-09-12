@@ -17,7 +17,9 @@ export class CatalogoComponent {
   constructor(
     private sharingDataServ : SharingDataService,
     private router: Router){
-    this.products = this.router.getCurrentNavigation()?.extras.state!['productos'];
+      if(this.router.getCurrentNavigation()?.extras.state){
+        this.products = this.router.getCurrentNavigation()?.extras.state!['productos'];
+      }
   }
 
   addCart(product: Product) {
