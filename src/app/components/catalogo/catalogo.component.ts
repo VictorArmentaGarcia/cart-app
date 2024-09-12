@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Product } from '../../models/Product';
 import { ProductCardComponent } from "../product-card/product-card.component";
-import { Router } from '@angular/router';
 import { SharingDataService } from '../../services/sharing-data.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'catalogo',
@@ -10,16 +10,19 @@ import { SharingDataService } from '../../services/sharing-data.service';
   imports: [ProductCardComponent],
   templateUrl: './catalogo.component.html',
 })
-export class CatalogoComponent {
+export class CatalogoComponent implements OnInit {
 
-  @Input() products! : Product[];
+  products! : Product[];
 
   constructor(
-    private sharingDataServ : SharingDataService,
-    private router: Router){
-      if(this.router.getCurrentNavigation()?.extras.state){
-        this.products = this.router.getCurrentNavigation()?.extras.state!['productos'];
-      }
+    private productService: ProductService,
+    private sharingDataServ : SharingDataService){
+
+  }
+
+
+  ngOnInit(): void {
+      this.products = this.productService.findAll();
   }
 
   addCart(product: Product) {

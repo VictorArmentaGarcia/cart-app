@@ -16,7 +16,6 @@ import { SharingDataService } from '../../services/sharing-data.service';
 })
 export class CartAppComponent implements OnInit {
 
-  productos: Product[]= [];
   items: CartItem[]= [];
   @Output() productEventEmiter: EventEmitter<Product> = new EventEmitter<Product>();
   total: number = 0;
@@ -29,7 +28,6 @@ export class CartAppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productos = this.productService.findAll();
     this.items = JSON.parse(sessionStorage.getItem('cart') || '[]');
     this.calculateTotal();
     this.onDeleteCart();
